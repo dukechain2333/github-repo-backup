@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@octokit/core": "^4.2.0",
+    "shelljs": "^0.8.5"
+  }
+}
