@@ -6,7 +6,18 @@ const auth_key = ''
 const org_name = ''
 const path = ''
 if (!fs.existsSync(path)) {
-    fs.mkdirSync(path)
+    fs.mkdirSync(path, {recursive: true})
+}
+
+function addLog(log) {
+    const time = new Date().toLocaleString('cn', {hour12: false})
+    const content = time + ' ' + log
+    console.log(content)
+    fs.writeFile(path + '/log.txt', content+'\n', {flag: 'a'}, function (err) {
+        if (err) {
+            console.log(err)
+        }
+    })
 }
 
 async function getRepoName() {
@@ -26,27 +37,35 @@ async function getRepoName() {
     return repoNames;
 }
 
-async function cloneRepo(repoName) {
+function cloneRepo(repoName) {
+    addLog("Starting clone repo: " + repoName)
     shell.cd(path)
     const command = 'git clone ' + repoName
     shell.exec(command)
 }
 
-async function updateRepo(filePath) {
+function updateRepo(filePath) {
+    addLog("Starting update repo: " + filePath)
     shell.cd(filePath)
     const command = 'git pull'
     shell.exec(command)
 }
 
-getRepoName().then(repos => {
-    for (const repo of repos) {
-        const gitName = 'https://github.com/' + repo + '.git'
-        const filePath = path + '/' + repo.split('/')[1]
-        if (fs.existsSync(filePath)) {
-            updateRepo(filePath)
+function main() {
+    // addLog('Starting process...')
+    getRepoName().then(repos => {
+        for (const repo of repos) {
+            const gitName = 'https://github.com/' + repo + '.git'
+            const filePath = path + '/' + repo.split('/')[1]
+            if (fs.existsSync(filePath)) {
+                updateRepo(filePath)
+            } else {
+                cloneRepo(gitName)
+            }
         }
-        else{
-            cloneRepo(gitName)
-        }
-    }
-})
+    })
+}
+
+main()
+setInterval(main, 1000 * 60 * 60)
+
