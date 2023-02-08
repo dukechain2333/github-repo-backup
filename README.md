@@ -15,7 +15,7 @@ A simple script to backup all your GitHub organization repositories.
 
     | Parameters |         Description          |
     | :--------: | :--------------------------: |
-    |  Auth_key  | Github personal access token |
+    |  auth_key  | Github personal access token |
     |  org_name  | The name of the organization |
     |    path    |       Backup directory       |
 
@@ -23,5 +23,5 @@ A simple script to backup all your GitHub organization repositories.
 
     ```bash
     node Main.js
-    ``` 
+    ```
 
