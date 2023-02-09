@@ -42,6 +42,7 @@ function cloneRepo(repoName) {
     shell.cd(path)
     const command = 'git clone ' + repoName
     shell.exec(command)
+    addLog(repoName + " clone complete.")
 }
 
 function updateRepo(filePath) {
@@ -49,10 +50,11 @@ function updateRepo(filePath) {
     shell.cd(filePath)
     const command = 'git pull'
     shell.exec(command)
+    addLog(filePath + " update complete.")
 }
 
 function main() {
-    // addLog('Starting process...')
+    addLog('Starting process...')
     getRepoName().then(repos => {
         for (const repo of repos) {
             const gitName = 'https://github.com/' + repo + '.git'
